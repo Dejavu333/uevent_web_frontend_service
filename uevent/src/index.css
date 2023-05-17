@@ -1,0 +1,38 @@
+:root {
+  --primary-color: #27a4ca;
+  --secondary-color: #f76c59;
+  --tertiary-color: #f355be;
+  --dark-color: #000000;
+  --light-color: #ffffff;
+  --primary-font: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  --default-font-size: 16px;
+  --default-line-height: 1.5;
+  --default-letter-spacing: 0.5px;
+  --default-font-weight: 400;
+  --default-min-width: 320px;
+  --default-min-height: 100vh;
+  --default-padding: 12px;
+  --default-margin-bottom: 16px;
+  --default-border: 4px solid var(--dark-color);
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--primary-font);
+  font-size: var(--default-font-size);
+  line-height: var(--default-line-height);
+  font-weight: var(--default-font-weight);
+  letter-spacing: var(--default-letter-spacing);
+  color: var(--dark-color);
+  background-color: var(--primary-color);
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: var(--default-min-width);
+  min-height: var(--default-min-height);
+}
