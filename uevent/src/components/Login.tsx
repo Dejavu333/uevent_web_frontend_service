@@ -1,30 +1,31 @@
 import { useState } from 'react';
-import './Login.css';
 import { Auth, RecaptchaVerifier, getAuth, signInWithPhoneNumber } from 'firebase/auth';
-// import firebase from '../firebaseConfig';
-import { initializeApp, FirebaseApp } from 'firebase/app';
+import firebaseApp from '../firebaseConfig';
+import './Login&Signup.css';
+import AUTH_API_HOST from '../constants';
 
+//---------------------------------
+//interfaces
+//---------------------------------
 interface User {
     email: string;
     password: string;
+    phoneNumber: string;
 }
 
+//---------------------------------
+//component
+//---------------------------------
 function Login() {
-    const firebaseConfig = {
-        apiKey: "AIzaSyDQTjpa6pAM4tO7MxUzzrZu-UQE3Md5yGU",
-        authDomain: "ueventauth-4cff4.firebaseapp.com",
-        projectId: "ueventauth-4cff4",
-        storageBucket: "ueventauth-4cff4.appspot.com",
-        messagingSenderId: "353994662796",
-        appId: "1:353994662796:web:5937d33390e61e2f7eaca9"
-    };
+    //---------------------------------
+    //props
+    //---------------------------------
+    const [user, setUser] = useState<User>({ email: '', password: '', phoneNumber: '' });
+    let c: RecaptchaVerifier;
 
-    // Initialize Firebase
-    const firebase: FirebaseApp = initializeApp(firebaseConfig);
-
-
-    const [user, setUser] = useState<User>({ email: '', password: '' });
-
+    //---------------------------------
+    //functions
+    //---------------------------------
     function handleInputChange(e: React.ChangeEvent<HTMLInputElement>): void {
         const { name, value } = e.target;
         setUser((prevUser) => ({ ...prevUser, [name]: value }));
@@ -33,56 +34,55 @@ function Login() {
     function handleSubmit(e: React.FormEvent<HTMLFormElement>): void {
         e.preventDefault();
         // Handle login logic
-        onSignInSubmit("");
+        onSignInSubmit();
     };
 
-    let c: RecaptchaVerifier;
     function setupRecaptcha(): RecaptchaVerifier {
-        const auth: Auth = getAuth(firebase);
+        const auth: Auth = getAuth(firebaseApp);
         console.log(auth);
         c = new RecaptchaVerifier(
             'recaptcha-element',
             {
                 'size': 'invisible',
                 'callback': (response: any) => {
-                    console.log("recaptcha solved");
-                    // reCAPTCHA solved, allow signInWithPhoneNumber.
-                    onSignInSubmit("");
+                    console.log(response);
+                    console.log("recaptcha solved, submitting the form now...");
+                    onSignInSubmit();
                 }
             },
             auth);
         return c;
     }
-    let i = 0;
-    function onSignInSubmit(phoneNum: string): void {
-        if (i == 1) return;
-        phoneNum = "+36205369176";
+
+    function onSignInSubmit(): void {
+
+        const phoneNum:string = "+36205369176";
         if (!c) { setupRecaptcha() };
-        const auth = getAuth(firebase);
+        const auth = getAuth(firebaseApp);
         signInWithPhoneNumber(auth, phoneNum, c)
             .then((confirmationResult: any) => {
-                // SMS sent. Prompt user to type the code from the message, then sign the
-                // user in with confirmationResult.confirm(code).
-                // //   window.confirmationResult = confirmationResult;
-                console.log("confirmation result:" + confirmationResult);
+                /* SMS sent. Prompt user to type the code from the message, then sign the
+                   user in with confirmationResult.confirm(code). */
+                // console.log("confirmation result:" + confirmationResult);
                 const code = window.prompt("Enter OTP");
-                confirmationResult.confirm(code).then((result:any) => {
+                confirmationResult.confirm(code).then((result: any) => {
                     // User signed in successfully.
                     const user = result.user;
                     console.log("USER LOGGED IN: " + user);
-                    // ...
-                }).catch((error:any) => {
+                    // registerUser(email, password, phoneNum);
+                }).catch((error: any) => {
                     // User couldn't sign in (bad verification code?)
                     // ...
+                    throw error;
                 });
-                i++;
-                // ...
             }).catch((error: any) => {
                 console.log(error);
             });
-
     }
 
+    //---------------------------------
+    //render
+    //---------------------------------
     return (
         <form onSubmit={handleSubmit} className="login-form">
             <div id="recaptcha-element"></div>
@@ -123,3 +123,34 @@ function Login() {
 
 export default Login;
 
+function registerUser(p_email: string, p_password: string, p_phoneNum: string) {
+    const route: string = AUTH_API_HOST+"/register";
+    //call api to register user flask app
+    console.log("registering user...");
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: p_email, password: p_password, phoneNum: p_phoneNum })
+    };
+
+    fetch(route, requestOptions)
+        .then(response => response.json())
+        .then(data => console.log(data));
+
+}
+
+function loginUser(p_email: string, p_password: string) {
+    const route: string = AUTH_API_HOST+"/login";
+    //call api to register user flask app
+    console.log("logging in user...");
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: p_email, password: p_password })
+    };
+
+    fetch(route, requestOptions)
+        .then(response => response.json())
+        .then(data => console.log(data));
+
+}

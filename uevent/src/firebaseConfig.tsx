@@ -5,15 +5,15 @@ import { FirebaseApp, initializeApp } from "firebase/app";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyCJXGi3SigCfw5H3fjzGNxN8rA6VVwHVBA",
-  authDomain: "ueventauth.firebaseapp.com",
-  projectId: "ueventauth",
-  storageBucket: "ueventauth.appspot.com",
-  messagingSenderId: "22897034097",
-  appId: "1:22897034097:web:6f34f9dcfaa7000fc56cd0"
+    apiKey: "AIzaSyDQTjpa6pAM4tO7MxUzzrZu-UQE3Md5yGU", //todo env variables
+    authDomain: "ueventauth-4cff4.firebaseapp.com",
+    projectId: "ueventauth-4cff4",
+    storageBucket: "ueventauth-4cff4.appspot.com",
+    messagingSenderId: "353994662796",
+    appId: "1:353994662796:web:5937d33390e61e2f7eaca9"
 };
 
 // Initialize Firebase
-const firebase:FirebaseApp = initializeApp(firebaseConfig);
+const firebaseApp: FirebaseApp = initializeApp(firebaseConfig);
 
-export default firebase; 
+export default firebaseApp; 

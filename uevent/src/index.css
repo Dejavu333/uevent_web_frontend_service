@@ -31,8 +31,15 @@ body {
   color: var(--dark-color);
   background-color: var(--primary-color);
   margin: 0;
+  padding: var(--default-padding);
   display: flex;
   place-items: center;
   min-width: var(--default-min-width);
   min-height: var(--default-min-height);
+}
+
+.ubirb {
+  position: fixed;
+  bottom: -20px;
+  z-index: -1;
 }

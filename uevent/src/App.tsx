@@ -1,35 +1,27 @@
-import Lottie from 'lottie-react'
-import UBIRB_ANIMATION_DATA from './assets/ubirb_animation.json'
+import Header from './components/Header'
+import LoginScreen from './screens/LoginScreen'
+import SignupScreen from './screens/SignupScreen'
+import MapScreen from './screens/MapScreen'
+import ProfileScreen from './screens/ProfileScreen'
 
-import Login from './components/Login'
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import { Route, Routes, BrowserRouter as Router } from 'react-router-dom'
 
 function App() {
-  const [count, setCount] = useState(0)
+  // const [count, setCount] = useState(0)
 
   return (
     <>
-      {/* <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div> */}
-      <h1>uevent</h1>
-      <Login/>
-      <div className="card">
-        {/* <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button> */}
-      </div>
-      
-        <Lottie className='ubirb' animationData={UBIRB_ANIMATION_DATA} />
-
+    <Router>
+        <Header/>
+        <Routes>
+          <Route path='/' element={< LoginScreen />} />
+          <Route path='/login' element={< LoginScreen />} />
+          <Route path='/signup' element={< SignupScreen />} />
+          <Route path='/map' element={< MapScreen />} />
+          <Route path='/profile' element={< ProfileScreen />} />
+        </Routes>
+    </Router>
     </>
   )
 }
